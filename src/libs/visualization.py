@@ -4,9 +4,10 @@ import ipywidgets as widgets
 import matplotlib.pyplot as plt
 import numpy as np
 import scienceplots
+import seaborn as sns
 
 from ipywidgets import fixed
-from typing import List, Literal, Union
+from typing import Literal
 from wordcloud import WordCloud
 
 from src.configs import constants
@@ -58,6 +59,14 @@ def plot_histogram_sentence_length(
 
 
 def plot_wordcloud(index: int, texts: np.ndarray, labels: np.ndarray) -> None:
+    """
+    Plot a word cloud for a given text.
+
+    Args:
+        index (int): The index of the text to plot.
+        texts (np.ndarray): The array of texts.
+        labels (np.ndarray): The array of labels corresponding to the texts.
+    """
     try:
         stopwords = [x.strip() for x in open(constants.STOPWORDS_PATH).readlines()]
     except FileNotFoundError:
@@ -74,6 +83,13 @@ def plot_wordcloud(index: int, texts: np.ndarray, labels: np.ndarray) -> None:
 
 
 def plot_wordcloud_slider(texts: np.ndarray, labels: np.ndarray) -> None:
+    """
+    Plot a word cloud slider for a given set of texts and labels.
+
+    Args:
+        texts (np.ndarray): The array of texts.
+        labels (np.ndarray): The array of labels corresponding to the texts.
+    """
     id = widgets.IntSlider(min=0, max=labels.shape[0] - 1, step=1, description="ID")
     widgets.interact(
         plot_wordcloud,
@@ -81,3 +97,27 @@ def plot_wordcloud_slider(texts: np.ndarray, labels: np.ndarray) -> None:
         texts=fixed(texts),
         labels=fixed(labels),
     )
+
+
+def plot_confusion_matrix(confusion_matrix: np.ndarray, labels: list[str]) -> None:
+    """
+    Plot the confusion matrix.
+
+    Args:
+        confusion_matrix (np.ndarray): The confusion matrix.
+        labels (list[str]): The list of labels.
+    """
+    plt.style.use("science")
+    plt.figure(figsize=(10, 6))
+    sns.heatmap(
+        confusion_matrix,
+        annot=True,
+        fmt="d",
+        cmap="Blues",
+        xticklabels=labels,
+        yticklabels=labels,
+    )
+    plt.xlabel("Predicted label")
+    plt.ylabel("True label")
+    plt.title("Confusion Matrix")
+    plt.show()

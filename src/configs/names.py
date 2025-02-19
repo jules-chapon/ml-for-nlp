@@ -14,9 +14,12 @@ ABSTRACT = "abstract"
 TITLE = "title"
 
 
-### MODELS
+### CLASSIFIERS
 
-MODEL_TYPE = "model_type"
+CLASSIFIER_TYPE = "classifier_type"
+LGBM = "lgbm"
+RANDOM_FOREST = "random_forest"
+NAIVE_BAYES = "naive_bayes"
 
 ### EMBEDDINGS
 
@@ -26,8 +29,34 @@ TF_IDF = "tf_idf"
 
 ### PARAMS
 
-# EMBEDDINGS
-
-MAX_FEATURES = "max_features"
+# GENERAL
 
 DEVICE = "device"
+CPU = "cpu"
+GPU = "gpu"
+
+# CLASSIFIERS
+
+CLASSIFIER_PARAMS = "classifier_params"
+
+BOOSTING_TYPE = "boosting_type"
+N_ESTIMATORS = "n_estimators"
+MAX_DEPTH = "max_depth"
+NUM_LEAVES = "num_leaves"
+SUBSAMPLE = "subsample"
+N_JOBS = "n_jobs"
+LEARNING_RATE = "learning_rate"
+VERBOSE = "verbose"
+RANDOM_STATE = "random_state"
+
+MIN_SAMPLES_SPLIT = "min_samples_split"
+MIN_SAMPLES_LEAF = "min_samples_leaf"
+BOOTSTRAP = "bootstrap"
+
+ALPHA = "alpha"
+
+# EMBEDDINGS
+
+EMBEDDING_PARAMS = "embedding_params"
+
+MAX_FEATURES = "max_features"

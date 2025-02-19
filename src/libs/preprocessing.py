@@ -1,13 +1,11 @@
 """Functions for preprocessing."""
 
-from datasets import load_dataset
+import numpy as np
 import pandas as pd
-import regex as re
 import time
-import unicodedata
 
+from datasets import load_dataset
 from sklearn.model_selection import train_test_split
-from typing import Any, Dict, List, Tuple, Union
 
 from src.configs import constants, names
 
@@ -15,15 +13,16 @@ from src.configs import constants, names
 def load_data_from_hf(
     dataset: int = 1,
     type: str = "full",
-) -> Tuple[Union[pd.DataFrame, None], Union[pd.DataFrame, None]]:
+) -> tuple[pd.DataFrame | None, pd.DataFrame | None]:
     """
+    Load data from Hugging Face dataset.
 
     Args:
         dataset (int): The dataset to load. Defaults to 1.
         type (str): Which files to load. Defaults to "full".
 
     Returns:
-        Tuple[Union[pd.DataFrame, None], Union[pd.DataFrame, None]]: (df_train, df_test).
+        tuple[pd.DataFrame | None, pd.DataFrame | None]: (df_train, df_test).
     """
     start_time = time.time()
     if dataset == 1:
@@ -48,7 +47,7 @@ def load_data_from_hf(
 def load_data_from_local(
     dataset: int = 1,
     type: str = "full",
-) -> Tuple[Union[pd.DataFrame, None], Union[pd.DataFrame, None]]:
+) -> tuple[pd.DataFrame | None, pd.DataFrame | None]:
     """
     Load data from local files.
 
@@ -57,7 +56,7 @@ def load_data_from_local(
         type (str): Which files to load. Defaults to "full".
 
     Returns:
-        Tuple[Union[pd.DataFrame, None], Union[pd.DataFrame, None]]: (df_train, df_test).
+        tuple[pd.DataFrame | None, pd.DataFrame | None]: (df_train, df_test).
     """
     start_time = time.time()
     if dataset == 1:
@@ -82,7 +81,7 @@ def load_data_from_local(
 
 def load_data(
     local: bool = True, dataset: int = 1, type: str = "full"
-) -> Tuple[Union[pd.DataFrame, None], Union[pd.DataFrame, None]]:
+) -> tuple[pd.DataFrame | None, pd.DataFrame | None]:
     """
     Load data from either local files or Hugging Face datasets.
 
@@ -92,7 +91,7 @@ def load_data(
         type (str): Which files to load to load. Defaults to "full".
 
     Returns:
-        Tuple[Union[pd.DataFrame, None], Union[pd.DataFrame, None]]: (df_train, df_test).
+        tuple[pd.DataFrame | None, pd.DataFrame | None]: (df_train, df_test).
     """
     if local:
         print("Loading data from local")
@@ -109,7 +108,31 @@ def clean_dataset_1(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def train_valid_split(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def split_features_and_labels(df: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Split the DataFrame into features and labels.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame.
+
+    Returns:
+        tuple[np.ndarray, np.ndarray]: The features and labels as numpy arrays.
+    """
+    X = df[names.TEXT].copy().to_numpy()
+    y = df[names.LABEL].copy().to_numpy()
+    return X, y
+
+
+def train_valid_split(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Split the DataFrame into training and validation sets.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame.
+
+    Returns:
+        tuple[pd.DataFrame, pd.DataFrame]: The training and validation DataFrames.
+    """
     df_train, df_valid = train_test_split(
         df, test_size=constants.VALID_RATIO, random_state=constants.RANDOM_SEED
     )
