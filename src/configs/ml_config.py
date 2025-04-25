@@ -15,6 +15,8 @@ from src.configs import constants, names
 # names.EMBEDDING_TYPE = [names.TF_IDF]
 # IF names.EMBEDDING_TYPE = names.TF_IDF (1)
 # PARAMS = {MAX_FEATURES : int}
+# IF names.EMBEDDING_TYPE = names.PUNCTUATION (2)
+# PARAMS = {}
 
 # names.CLASSIFIER_TYPE = [names.LGBM, names.RANDOM_FOREST, names.NAIVE_BAYES]
 # IF names.CLASSIFIER_TYPE = names.LGBM (1)
@@ -26,6 +28,27 @@ from src.configs import constants, names
 
 
 EXPERIMENTS_CONFIGS = {
+    211: {
+        names.DEVICE: names.CPU,
+        ### EMBEDDING : TF-IDF
+        names.EMBEDDING_TYPE: names.PUNCTUATION,
+        # PARAMS
+        names.EMBEDDING_PARAMS: {},
+        ### CLASSIFIER : LGBM
+        names.CLASSIFIER_TYPE: names.LGBM,
+        # PARAMS
+        names.CLASSIFIER_PARAMS: {
+            names.BOOSTING_TYPE: "gbdt",
+            names.N_ESTIMATORS: 100,
+            names.MAX_DEPTH: 10,
+            names.NUM_LEAVES: 31,
+            names.SUBSAMPLE: 0.8,
+            names.N_JOBS: -1,
+            names.LEARNING_RATE: 0.05,
+            names.VERBOSE: -1,
+            names.RANDOM_STATE: constants.RANDOM_SEED,
+        },
+    },
     111: {
         names.DEVICE: names.CPU,
         ### EMBEDDING : TF-IDF

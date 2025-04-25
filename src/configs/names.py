@@ -11,8 +11,13 @@
 LABEL = "label"
 TEXT = "text"
 ABSTRACT = "abstract"
-TITLE = "title"
 
+### TYPES
+
+TYPE = "type"
+TYPE_POETRY = "poetry"
+TYPE_ESSAY = "essay"
+TYPE_STORY = "story"
 
 ### CLASSIFIERS
 
@@ -25,6 +30,7 @@ NAIVE_BAYES = "naive_bayes"
 
 EMBEDDING_TYPE = "embedding_type"
 TF_IDF = "tf_idf"
+PUNCTUATION = "punctuation"
 
 
 ### PARAMS

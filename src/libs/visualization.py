@@ -7,6 +7,7 @@ import scienceplots
 import seaborn as sns
 
 from ipywidgets import fixed
+from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 from typing import Literal
 from wordcloud import WordCloud
 
@@ -34,27 +35,65 @@ def plot_losses(train_losses: np.ndarray, valid_losses: np.ndarray) -> None:
 
 
 def plot_histogram_sentence_length(
-    sentence_lengths: np.ndarray, type: Literal["words", "characters"] = "words"
+    sentence_lengths: np.ndarray,
+    labels: np.ndarray,
+    type: Literal["words", "characters"] = "words",
 ) -> None:
     """
     Plot the histogram of sentence lengths in the dataset.
 
     Args:
         sentence_lengths (np.ndarray): Length of each sentence (whether number of words or characters).
+        labels (np.ndarray): Labels of the sentences.
         type (str, optional): Whether considering word or character level. Defaults to "words".
     """
     plt.style.use("science")
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(12, 6))
+    plt.subplot(1, 3, 1)
     plt.hist(
-        sentence_lengths,
+        sentence_lengths[labels == 0],
         range=(0, 1000) if type == "words" else (0, 10000),
         bins=20,
-        weights=np.ones(len(sentence_lengths)) / len(sentence_lengths),
+        weights=np.ones(len(sentence_lengths[labels == 0]))
+        / len(sentence_lengths[labels == 0]),
     )
-    plt.title(f"Sentence Lengths (in number of {type})")
-    plt.xlabel(f"Sentence Length (in number of {type})")
+    plt.ylim(0, 1)
+    plt.title(f"Sentence lengths (in number of {type}) for label 0")
+    plt.xlabel(f"Sentence length (in number of {type})")
     plt.ylabel("Frequency")
     plt.grid(axis="both", which="major", alpha=0.5)
+
+    plt.subplot(1, 3, 2)
+    plt.hist(
+        sentence_lengths[labels == 1],
+        range=(0, 1000) if type == "words" else (0, 10000),
+        bins=20,
+        color="green",
+        weights=np.ones(len(sentence_lengths[labels == 1]))
+        / len(sentence_lengths[labels == 1]),
+    )
+    plt.ylim(0, 1)
+    plt.title(f"Sentence lengths (in number of {type}) for label 1")
+    plt.xlabel(f"Sentence length (in number of {type})")
+    plt.ylabel("Frequency")
+    plt.grid(axis="both", which="major", alpha=0.5)
+
+    plt.subplot(1, 3, 3)
+    plt.hist(
+        sentence_lengths[labels == 2],
+        range=(0, 1000) if type == "words" else (0, 10000),
+        bins=20,
+        color="red",
+        weights=np.ones(len(sentence_lengths[labels == 2]))
+        / len(sentence_lengths[labels == 2]),
+    )
+    plt.ylim(0, 1)
+    plt.title(f"Sentence lengths (in number of {type}) for label 2")
+    plt.xlabel(f"Sentence length (in number of {type})")
+    plt.ylabel("Frequency")
+    plt.grid(axis="both", which="major", alpha=0.5)
+
+    plt.tight_layout()
     plt.show()
 
 
@@ -67,17 +106,20 @@ def plot_wordcloud(index: int, texts: np.ndarray, labels: np.ndarray) -> None:
         texts (np.ndarray): The array of texts.
         labels (np.ndarray): The array of labels corresponding to the texts.
     """
-    try:
-        stopwords = [x.strip() for x in open(constants.STOPWORDS_PATH).readlines()]
-    except FileNotFoundError:
-        stopwords = None
+    stopwords = ENGLISH_STOP_WORDS
     text = texts[index]
     label = labels[index]
     wc = WordCloud(background_color="white", repeat=True, stopwords=stopwords)
     wc.generate(text)
     plt.figure(figsize=(10, 6))
     plt.axis("off")
-    plt.title("AI-generated text" if label == 1 else "Human-written text")
+    plt.title(
+        "ChatGPT-generated text"
+        if label == 1
+        else "Human-written text"
+        if label == 0
+        else "BARD-generated text"
+    )
     plt.imshow(wc, interpolation="bilinear")
     plt.show()
 

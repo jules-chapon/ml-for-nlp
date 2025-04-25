@@ -3,6 +3,7 @@
 import abc
 import lightgbm as lgb
 import numpy as np
+import shap
 import typing
 
 from sklearn.ensemble import RandomForestClassifier
@@ -92,6 +93,11 @@ class Classifier(abc.ABC):
         y_pred = self.predict(X)
         return evaluation.get_metrics(y_true=y, y_pred=y_pred)
 
+    def get_shap_values(self: _Classifier, X: np.ndarray) -> np.ndarray:
+        explainer = shap.Explainer(self.classifier)
+        shap_values = explainer(X)
+        return shap_values.values
+
 
 _LightGBMClassifier = typing.TypeVar(
     name="_LightGBMClassifier", bound="LightGBMClassifier"
@@ -117,6 +123,9 @@ class LightGBMClassifier(Classifier):
         """
         super().__init__(id_experiment)
         self.classifier = lgb.LGBMClassifier(**self.params[names.CLASSIFIER_PARAMS])
+
+    def get_feature_importance(self: _LightGBMClassifier) -> np.ndarray:
+        return self.classifier.feature_importances_
 
 
 _RFClassifier = typing.TypeVar(name="_RFClassifier", bound="RFClassifier")
