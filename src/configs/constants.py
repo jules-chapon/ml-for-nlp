@@ -17,17 +17,32 @@ REMOTE_TRAINING_FOLDER = "remote_training"
 #                                                             #
 ###############################################################
 
-### LOCAL
+### DOWNLOAD DATASET
 
-LOCAL_TRAIN_DATASET_1_PATH = "data/input/train_1.csv"
+REPO_URL = "https://github.com/sakibsh/LLM"
+TARGET_FOLDER = "data"
+TEMPORARY_FOLDER = "__tmp"
+DATA_GITHUB_FOLDER = "data/input/github"
 
-LOCAL_TEST_DATASET_1_PATH = "data/input/test_1.csv"
+### FILENAMES
 
-STOPWORDS_PATH = "data/inputs/stopwords.txt"
+BARD_ESSAY = "BARD_essay.csv"
+BARD_POETRY = "BARD_poetry.csv"
+BARD_CODE = "BARD_pycode.csv"
+BARD_STORY = "BARD_story.csv"
 
-### HUGGING FACE
+GPT_ESSAY = "ChatGPT_essay.csv"
+GPT_POETRY = "ChatGPT_poetry.csv"
+GPT_CODE = "ChatGPT_pycode.csv"
+GPT_STORY = "ChatGPT_story.csv"
 
-HF_FULL_DATASET_1_NAME = "Ateeqq/AI-and-Human-Generated-Text"
+HUMAN_ESSAY_1 = "human_essay_1.csv"
+HUMAN_ESSAY_2 = "human_essay_2.csv"
+HUMAN_ESSAY_3 = "human_essay_hewlett.csv"
+HUMAN_ESSAY_4 = "human_essay_hugg.csv"
+HUMAN_POETRY = "human_poetry.csv"
+HUMAN_CODE = "human_code.csv"
+HUMAN_STORY = "human_stories.csv"
 
 
 ###############################################################
@@ -54,3 +69,9 @@ KAGGLE_DATASET_LIST = []
 RANDOM_SEED = 42
 
 VALID_RATIO = 0.1
+
+GPT_LABEL = 1
+
+BARD_LABEL = 2
+
+HUMAN_LABEL = 0

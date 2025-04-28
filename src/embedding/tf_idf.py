@@ -31,6 +31,7 @@ class TfIdfEmbedding(Embedding):
         self.embedding = TfidfVectorizer(
             max_features=self.params[names.EMBEDDING_PARAMS][names.MAX_FEATURES],
             smooth_idf=True,
+            stop_words="english",
         )
 
     def fit(self: _TfIdfEmbedding, X: np.ndarray) -> None:
@@ -51,3 +52,12 @@ class TfIdfEmbedding(Embedding):
             np.ndarray: The transformed data.
         """
         return self.embedding.transform(X)
+
+    def map_dimensions_to_names(self: _TfIdfEmbedding) -> np.ndarray:
+        """
+        Maps the dimensions of the embedding to their corresponding feature names.
+
+        Returns:
+            np.ndarray: An array of feature names corresponding to the dimensions of the embedding.
+        """
+        return self.embedding.get_feature_names_out()
