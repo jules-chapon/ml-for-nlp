@@ -120,21 +120,21 @@ def clean_text_column(col: pd.Series, source: str | None = None) -> pd.Series:
     Returns:
         pd.Series: The cleaned text column.
     """
-    if source == "BARD":
-        col = pd.Series(
-            np.where(
-                col.str.startswith("Sure"),
-                col.str.split(r"\r\n\r").str[1:].str.join(" "),
-                col.str.split(r"\r\n\r").str.join(" "),
-            )
+    col = pd.Series(
+        np.where(
+            col.str.startswith("Sure"),
+            col.str.split(r"\r\n\r").str[1:].str.join(" "),
+            col.str.split(r"\r\n\r").str.join(" "),
         )
-        col = col.str.replace("Chapter Text", "")
-        col = col.str.replace("\r\r\n", " ")
-        col = col.str.replace("\r\n\r", " ")
-        col = col.str.replace("\n", " ")
-        col = col.str.replace("\r", " ")
-        col = col.str.replace(r"\s{2,}", " ", regex=True)
-        col = col.str.strip()
+    )
+    col = col.str.replace("Chapter Text", "")
+    col = col.str.replace("\r\r\n", " ")
+    col = col.str.replace("\r\n\r", " ")
+    col = col.str.replace("\n", " ")
+    col = col.str.replace("\r", " ")
+    col = col.str.replace(r"\s{2,}", " ", regex=True)
+    col = col.str.strip()
+
     return col
 
 
