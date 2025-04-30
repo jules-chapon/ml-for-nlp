@@ -432,7 +432,10 @@ def train_valid_split(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
         tuple[pd.DataFrame, pd.DataFrame]: The training and validation DataFrames.
     """
     df_train, df_valid = train_test_split(
-        df, test_size=constants.VALID_RATIO, random_state=constants.RANDOM_SEED
+        df,
+        test_size=constants.VALID_RATIO,
+        random_state=constants.RANDOM_SEED,
+        stratify=df["label"],
     )
     return df_train, df_valid
 
