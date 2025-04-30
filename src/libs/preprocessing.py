@@ -150,6 +150,7 @@ def clean_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     """
     df = df[df[names.TEXT] != ""]
     df = df.dropna()
+    df = df[df[names.TEXT].astype(str).apply(len) > 5]
     df = df.drop_duplicates()
     df = df[~df[names.TEXT].str.contains("ChatGPT")]
     df = df[~df[names.TEXT].str.contains("BARD")]
@@ -435,6 +436,7 @@ def train_valid_split(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
         df,
         test_size=constants.VALID_RATIO,
         random_state=constants.RANDOM_SEED,
+        shuffle=True,
     )
     return df_train, df_valid
 
