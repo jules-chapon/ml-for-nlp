@@ -424,7 +424,7 @@ def split_features_and_labels(df: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]
 
 def train_valid_split(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
-    Split the DataFrame into training and validation sets.
+    Split the DataFrame into training and validation sets, using stratification if possible.
 
     Args:
         df (pd.DataFrame): The input DataFrame.
@@ -432,12 +432,21 @@ def train_valid_split(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     Returns:
         tuple[pd.DataFrame, pd.DataFrame]: The training and validation DataFrames.
     """
-    df_train, df_valid = train_test_split(
-        df,
-        test_size=constants.VALID_RATIO,
-        random_state=constants.RANDOM_SEED,
-        shuffle=True,
-    )
+    try:
+        df_train, df_valid = train_test_split(
+            df,
+            test_size=constants.VALID_RATIO,
+            random_state=constants.RANDOM_SEED,
+            stratify=df.label,
+        )
+    except AttributeError as e:
+        print(f"Stratified split failed: {e}")
+        print("Falling back to random split without stratification.")
+        df_train, df_valid = train_test_split(
+            df,
+            test_size=constants.VALID_RATIO,
+            random_state=constants.RANDOM_SEED,
+        )
     return df_train, df_valid
 
 
